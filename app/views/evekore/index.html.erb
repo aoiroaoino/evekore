@@ -1,10 +1,30 @@
-<h1>イベこれ</h1>
+<img src="http://sngk.net/OGbRJP/img2" border=0>
 
-
-  <div class="span3">
-    <%= render 'menu' %>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span12">
+      <table class="table" class="table table-condensed">
+        <thead>
+          <tr>
+            <th>イベント名</th>
+            <th>開催日時</th>
+            <th>開催場所</th>
+            <th>人数/定員</th>
+            <th>サイト</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @events.each do |event| %>
+	          <tr class=<%= table_color(event["service"]) %> >
+	            <td width="30%"><%= link_to event["title"], event["Url"], target: "_blank" %></td>
+	            <td><%= event["start_time"] %></td>
+	            <td><%= event["place"] %></td>
+	            <td width="70px"><%= event["personJoin"] %> / <%= event["personLimit"] %></td>
+	            <td><%= event["service"] %></td>
+	          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
-
-  <div class="span9">
-    <%= render 'list' %>
-  </div>
+</div>
