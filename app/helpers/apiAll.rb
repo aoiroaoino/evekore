@@ -14,7 +14,7 @@ class ApiAll
     @viewJson["event"].push(modifyAtndJson(atndJson.getJson)["event"])
     @viewJson["event"].push(modifyParkateJson(parkateJson.getJson)["event"])
 
-    @viewJson["event"].flatten
+    @viewJson["event"].flatten!
   end
 
   def getResult
