@@ -19,7 +19,7 @@
 	            <td width="30%"><%= link_to event["title"], event["Url"], target: "_blank" %></td>
 	            <td><%= event["start_time"] %></td>
 	            <td><%= event["place"] %></td>
-	            <td width="70px"><%= event["personJoin"] %> / <%= event["personLimit"] %></td>
+	            <td width="70px"><%= event["personJoin"] ||= "-" %> / <%= event["personLimit"] ||= "-" %></td>
 	            <td><%= event["service"] %></td>
 	          </tr>
           <% end %>
