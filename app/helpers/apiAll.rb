@@ -10,9 +10,9 @@ class ApiAll
     parkateJson = Apiparkate.new
 
     viewJson = {"event" => []}
-    #viewJson["event"].push(modifyDoorkeeperJson(doorkeeper.getJson)["event"])
-    #viewJson["event"].push(modifyAtndJson(atndJson.getJson)["event"])
-    #viewJson["event"].push(modifyParkateJson(parkateJson.getJson)["event"])
+    viewJson["event"].push(modifyDoorkeeperJson(doorkeeper.getJson)["event"])
+    viewJson["event"].push(modifyAtndJson(atndJson.getJson)["event"])
+    viewJson["event"].push(modifyParkateJson(parkateJson.getJson)["event"])
 
     viewJson
   end
