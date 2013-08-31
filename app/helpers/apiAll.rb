@@ -15,6 +15,10 @@ class ApiAll
     @viewJson["event"].push(modifyParkateJson(parkateJson.getJson)["event"])
   end
 
+  def getResult
+    @viewJson
+  end
+
   def modifyDoorkeeperJson(doorkeeperJson)
     viewJson = {"event" => []}
 
