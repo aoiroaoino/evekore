@@ -1,4 +1,4 @@
-class EvekoreController < ActionController::Base
+class EvekoreController < ApplicationController
 
   def index
   	
