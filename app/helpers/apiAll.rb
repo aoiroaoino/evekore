@@ -1,18 +1,18 @@
 require_relative "apidoorkeeper"
 require_relative "apiatnd"
-require_relative "apiparkate"
+require_relative "apipartake"
 
 class ApiAll
 
   def initialize
     doorkeeper = Apidoorkeeper.new
     atndJson = Apiatnd.new
-    parkateJson = Apiparkate.new
+    partake = Apipartake.new
 
     @viewJson = {"event" => []}
     @viewJson["event"].push(modifyDoorkeeperJson(doorkeeper.getJson)["event"])
     @viewJson["event"].push(modifyAtndJson(atndJson.getJson)["event"])
-    @viewJson["event"].push(modifyParkateJson(parkateJson.getJson)["event"])
+    @viewJson["event"].push(modifyPartakeJson(partake.getJson)["event"])
 
     @viewJson["event"].flatten!
   end
@@ -29,8 +29,8 @@ class ApiAll
       viewJsonEvent["service"] = "DoorKeeper"
       viewJsonEvent["id"] = event["event"]["id"]
       viewJsonEvent["title"] = event["event"]["title"]
-      viewJsonEvent["start_time"] = event["event"]["starts_at"]
-      viewJsonEvent["end_time"] = event["event"]["ends_at"]
+      viewJsonEvent["start_time"] = setDoorkeeperTime(event["event"]["starts_at"])
+      viewJsonEvent["end_time"] = setDoorkeeperTime(event["event"]["ends_at"])
       viewJsonEvent["place"] = event["event"]["venue_name"]
       viewJsonEvent["address"] = event["event"]["address"]
       viewJsonEvent["personLimit"] = event["event"]["ticket_limit"]
@@ -44,6 +44,17 @@ class ApiAll
     viewJson
   end
 
+  def setDoorkeeperTime(targetTime)
+    if(targetTime != nil)
+      hour = targetTime[12,2].to_i + 9
+      if(hour > 24)
+        hour - 24
+      end
+
+      targetTime[0,4] + '/' + targetTime[5,2] + '/' + targetTime[8,2] + ' ' + hour.to_s + targetTime[13,6]
+    end
+  end
+
   def modifyAtndJson(atndJson)
     viewJson = {"event" => []}
 
@@ -52,8 +63,8 @@ class ApiAll
       viewJsonEvent["service"] = "ATND"
       viewJsonEvent["id"] = event["event_id"]
       viewJsonEvent["title"] = event["title"]
-      viewJsonEvent["start_time"] = event["started_at"]
-      viewJsonEvent["end_time"] = event["ended_at"]
+      viewJsonEvent["start_time"] = setDoorkeeperTime(event["started_at"])
+      viewJsonEvent["end_time"] = setDoorkeeperTime(event["ended_at"])
       viewJsonEvent["place"] = event["place"]
       viewJsonEvent["address"] = event["address"]
       viewJsonEvent["personLimit"] = event["limit"]
@@ -67,19 +78,17 @@ class ApiAll
     viewJson
   end
 
-
-
-  def modifyParkateJson(parkateJson)
+  def modifyPartakeJson(partakeJson)
     viewJson = {"event" => []}
 
-    parkateJson["events"].each do |event|
+    partakeJson["events"].each do |event|
       event["description"] = ''
       viewJsonEvent = {}
-      viewJsonEvent["service"] = "Parkate"
+      viewJsonEvent["service"] = "Partake"
       viewJsonEvent["id"] = event["id"]
       viewJsonEvent["title"] = event["title"]
-      viewJsonEvent["start_time"] = event["beginDate"]
-      viewJsonEvent["end_time"] = event["endDate"]
+      viewJsonEvent["start_time"] = setPartakeTime(event["beginDate"])
+      viewJsonEvent["end_time"] = setPartakeTime(event["endDate"])
       viewJsonEvent["place"] = event["place"]
       viewJsonEvent["address"] = event["address"]
       viewJsonEvent["personLimit"] = event["limit"]
@@ -91,6 +100,12 @@ class ApiAll
     end
 
     viewJson
+  end
+
+  def setPartakeTime(targetTime)
+    if(targetTime != nil)
+      targetTime[0,4] + '/' + targetTime[5,2] + '/' + targetTime[8,2] + ' ' + targetTime[11,5] + ':00'
+    end
   end
 end
 
